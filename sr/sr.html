@@ -1,0 +1,217 @@
+<!DOCTYPE html>
+<html lang="zh-CN">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+    <title>生日快乐</title>
+    <style>
+        *{margin:0;padding:0;box-sizing:border-box;font-family:"Microsoft YaHei",sans-serif}
+        html,body{width:100%;min-height:100vh;background:#000;overflow-x:hidden}
+        body{-webkit-text-size-adjust:100%;}
+
+        .carousel{position:fixed;width:100%;height:100%;z-index:0}
+        .carousel-item{position:absolute;width:100%;height:100%;object-fit:cover;opacity:0;animation:carousel 15s infinite}
+        .carousel-item:nth-child(1){animation-delay:0s}
+        .carousel-item:nth-child(2){animation-delay:5s}
+        .carousel-item:nth-child(3){animation-delay:10s}
+        @keyframes carousel{0%{opacity:0;transform:scale(1.1)}10%{opacity:1;transform:scale(1)}40%{opacity:1;transform:scale(1)}50%{opacity:0;transform:scale(1.1)}100%{opacity:0}}
+
+        .mask{position:fixed;top:0;left:0;width:100%;height:100%;background:rgba(0,0,0,0.55);z-index:1}
+
+        .container{position:relative;z-index:2;min-height:100vh;display:flex;flex-direction:column;align-items:center;justify-content:center;color:#fff;text-align:center;padding:20px 15px;width:100%}
+
+        .title{font-size:36px;font-weight:bold;margin-bottom:10px;text-shadow:0 0 15px rgba(255,185,0,0.8);background:linear-gradient(90deg,#ffd700,#ff69b4,#87ceeb);-webkit-background-clip:text;-webkit-text-fill-color:transparent;animation:glow 2s infinite alternate}
+        @media(max-width:400px){.title{font-size:28px;}}
+        @keyframes glow{from{filter:drop-shadow(0 0 10px #ffd700)}to{filter:drop-shadow(0 0 25px #ff69b4)}}
+
+        .subtitle{font-size:16px;margin-bottom:20px;opacity:.9}
+
+        .countdown{display:flex;gap:10px;margin:20px 0;flex-wrap:wrap;justify-content:center}
+        .time-box{width:60px;height:60px;background:rgba(255,255,255,0.15);border-radius:12px;display:flex;flex-direction:column;align-items:center;justify-content:center;backdrop-filter:blur(10px);border:1px solid rgba(255,255,255,0.2)}
+        .time-num{font-size:20px;font-weight:bold}
+        .time-text{font-size:11px;opacity:.8}
+
+        .wish{max-width:100%;line-height:1.8;font-size:15px;margin:20px 0 25px;opacity:.95;padding:0 10px}
+
+        .play-btn{padding:14px 32px;background:linear-gradient(45deg,#ff5e62,#ff9966);border:none;border-radius:50px;color:#fff;font-size:16px;font-weight:bold;cursor:pointer;box-shadow:0 5px 15px rgba(255,94,98,0.4);transition:.3s;max-width:90%;white-space:nowrap}
+        .play-btn:hover{transform:translateY(-3px);box-shadow:0 8px 20px rgba(255,94,98,0.5)}
+
+        .petal{position:fixed;pointer-events:none;z-index:3;animation:fall linear infinite;color:#ff91b9}
+        @keyframes fall{0%{transform:translateY(-10vh) rotate(0deg);opacity:1}100%{transform:translateY(110vh) rotate(360deg);opacity:0}}
+
+        #fireworksCanvas{position:fixed;top:0;left:0;width:100%;height:100%;z-index:99;pointer-events:none;display:none}
+    </style>
+</head>
+<body>
+<canvas id="fireworksCanvas"></canvas>
+
+<!-- 你的图片：保持原样，只修复格式 -->
+<div class="carousel">
+    <img src="sr3.jpg" class="carousel-item">
+    <img src="sr1.jpg" class="carousel-item">
+    <img src="sr2.jpg" class="carousel-item">
+</div>
+
+<div class="mask"></div>
+<div class="container">
+    <h1 class="title">生日快乐</h1>
+    <p class="subtitle">愿所有美好都如约而至</p>
+    <div class="countdown">
+        <div class="time-box"><div class="time-num" id="day">00</div><div class="time-text">天</div></div>
+        <div class="time-box"><div class="time-num" id="hour">00</div><div class="time-text">时</div></div>
+        <div class="time-box"><div class="time-num" id="min">00</div><div class="time-text">分</div></div>
+        <div class="time-box"><div class="time-num" id="sec">00</div><div class="time-text">秒</div></div>
+    </div>
+    <div class="wish">愿你新的一岁，平安喜乐，万事胜意，<br>眼里有光，心中有爱，一路春暖花开，永远被温柔以待。</div>
+    <button class="play-btn" onclick="playVideo()">播放生日祝福视频</button>
+</div>
+
+<script>
+window.onload = function(){
+    // 你的音乐
+    const audio = new Audio("全部都是你.mp3");
+    audio.volume=0.4;audio.loop=true;
+    audio.play().catch(()=>{});
+    createPetals();
+    startCountdown();
+    initFireworks();
+};
+
+let countdownEnded = false;
+function startCountdown(){
+    const target = new Date("2026-04-06T00:00:00+8:00");
+    function update(){
+        const now = new Date();
+        const diff = target - now;
+        if(diff<=0){
+            document.getElementById("day").innerText="00";
+            document.getElementById("hour").innerText="00";
+            document.getElementById("min").innerText="00";
+            document.getElementById("sec").innerText="00";
+            if(!countdownEnded){
+                countdownEnded=true;
+                startFireworks();
+            }
+            return;
+        }
+        const d=Math.floor(diff/86400000);
+        const h=Math.floor((diff%86400000)/3600000);
+        const m=Math.floor((diff%3600000)/60000);
+        const s=Math.floor((diff%60000)/1000);
+        document.getElementById("day").innerText=String(d).padStart(2,"0");
+        document.getElementById("hour").innerText=String(h).padStart(2,"0");
+        document.getElementById("min").innerText=String(m).padStart(2,"0");
+        document.getElementById("sec").innerText=String(s).padStart(2,"0");
+    }
+    update();
+    setInterval(update,1000);
+}
+
+function createPetals(){
+    const emojis=["❤️","✨","🎂","🎈","💖"];
+    const count=40;
+    for(let i=0;i<count;i++){
+        const div=document.createElement("div");
+        div.className="petal";
+        div.innerText=emojis[Math.floor(Math.random()*emojis.length)];
+        div.style.left=Math.random()*100+"vw";
+        div.style.animationDuration=(Math.random()*3+4)+"s";
+        div.style.fontSize=Math.random()*12+18+"px";
+        div.style.opacity=Math.random()*0.6+0.4;
+        document.body.appendChild(div);
+    }
+}
+
+let canvas,ctx;
+let fireworksRunning=false;
+function initFireworks(){
+    canvas=document.getElementById("fireworksCanvas");
+    ctx=canvas.getContext("2d");
+    resizeCanvas();
+    window.addEventListener("resize",resizeCanvas);
+}
+function resizeCanvas(){
+    canvas.width=window.innerWidth;
+    canvas.height=window.innerHeight;
+}
+function startFireworks(){
+    canvas.style.display="block";
+    fireworksRunning=true;
+    fireworksLoop();
+}
+
+class Firework{
+    constructor(){
+        this.x=Math.random()*canvas.width;
+        this.y=canvas.height;
+        this.speed=Math.random()*3+3;
+        this.angle=Math.PI/2+(Math.random()-0.5)*1;
+        this.vx=Math.cos(this.angle)*this.speed;
+        this.vy=-Math.sin(this.angle)*this.speed;
+        this.alpha=1;
+        this.color=`hsl(${Math.random()*360},100%,60%)`;
+    }
+    update(){
+        this.x+=this.vx;
+        this.y+=this.vy;
+        this.vy+=0.05;
+        this.alpha-=0.01;
+    }
+    draw(){
+        ctx.save();
+        ctx.globalAlpha=this.alpha;
+        ctx.beginPath();
+        ctx.arc(this.x,this.y,2,0,Math.PI*2);
+        ctx.fillStyle=this.color;
+        ctx.fill();
+        ctx.restore();
+    }
+}
+
+class Particle{
+    constructor(x,y,color){
+        this.x=x;this.y=y;
+        this.speed=Math.random()*4+2;
+        this.angle=Math.random()*Math.PI*2;
+        this.vx=Math.cos(this.angle)*this.speed;
+        this.vy=Math.sin(this.angle)*this.speed;
+        this.alpha=1;
+        this.decay=Math.random()*0.01+0.005;
+        this.color=color;
+    }
+    update(){
+        this.x+=this.vx;this.y+=this.vy;this.vy+=0.05;this.alpha-=this.decay;
+    }
+    draw(){
+        ctx.save();ctx.globalAlpha=this.alpha;ctx.beginPath();ctx.arc(this.x,this.y,1.5,0,Math.PI*2);ctx.fillStyle=this.color;ctx.fill();ctx.restore();
+    }
+}
+
+let fireworks=[];
+let particles=[];
+
+function fireworksLoop(){
+    if(!fireworksRunning)return;
+    ctx.clearRect(0,0,canvas.width,canvas.height);
+    if(Math.random()<0.15)fireworks.push(new Firework());
+    for(let i=fireworks.length-1;i>=0;i--){
+        const f=fireworks[i];f.update();f.draw();
+        if(f.alpha<=0){
+            fireworks.splice(i,1);
+            for(let j=0;j<50;j++)particles.push(new Particle(f.x,f.y,f.color));
+        }
+    }
+    for(let i=particles.length-1;i>=0;i--){
+        const p=particles[i];p.update();p.draw();
+        if(p.alpha<=0)particles.splice(i,1);
+    }
+    requestAnimationFrame(fireworksLoop);
+}
+
+// 你的视频
+function playVideo(){
+    window.open("91b7ad48593b84d3c20c30f42b664329.mp4","_blank");
+}
+</script>
+</body>
+</html>
