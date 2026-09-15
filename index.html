@@ -1,0 +1,53 @@
+<!doctype html>
+<html lang="zh-CN">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1">
+  <meta name="theme-color" content="#0a1120">
+  <meta name="description" content="董子豪，生日快乐。愿新的一岁，自由、明亮，永远有热爱可奔赴。一封为你而来的星光来信。">
+  <title>董子豪，生日快乐 · 一封星光来信</title>
+  <link rel="icon" href="./favicon.svg" type="image/svg+xml">
+  <link rel="stylesheet" href="./style.css">
+  <script src="./app.js" defer></script>
+</head>
+<body>
+  <canvas id="fireworks" aria-hidden="true"></canvas>
+  <div class="page-shell">
+    <header class="masthead">
+      <a class="wordmark" href="#home" aria-label="星光来信，回到首页"><span class="spark">✳</span> 星光来信 <span class="wordmark-en">A LETTER FROM THE STARS</span></a>
+      <span class="edition">特别放映 · 只为董子豪</span>
+    </header>
+    <main id="home">
+      <section class="hero" aria-labelledby="birthday-title">
+        <div class="hero-art" role="img" aria-label="星空下，生日蛋糕上的烛光温柔闪耀"></div>
+        <div class="orbit orbit-one" aria-hidden="true"></div>
+        <div class="orbit orbit-two" aria-hidden="true"></div>
+        <div class="hero-copy">
+          <p class="eyebrow"><span></span> THE UNIVERSE CELEBRATES YOU</p>
+          <h1 id="birthday-title"><span class="name">董子豪<span class="name-dot">.</span></span><span class="birthday">生日快乐<span class="title-star" aria-hidden="true">✧</span></span></h1>
+          <p class="hero-line">今晚，宇宙的浪漫<br>都偏爱你一点。</p>
+          <p class="hero-note">把心愿交给星星，<br class="mobile-break">把新的一岁交给热爱的自己。</p>
+          <div class="actions">
+            <button class="primary" id="wish-button"><span aria-hidden="true">✧</span> 许个愿，点亮星空 <span aria-hidden="true">↗</span></button>
+            <button class="letter-button" id="letter-button" aria-expanded="false" aria-controls="letter">有一封信，想给你 <span aria-hidden="true">↓</span></button>
+          </div>
+          <p class="wish-status" id="wish-status" role="status" aria-live="polite">不必说出口，星星会替你记得。</p>
+        </div>
+        <div class="art-caption"><span class="caption-line"></span><span>MAKE A WISH<br><small>这一刻，你是宇宙的中心。</small></span></div>
+        <div class="hero-bottom"><span>FOR YOU, DONG ZIHAO</span><span>新的一岁 · 好事正在发生 <span aria-hidden="true">✦</span></span></div>
+      </section>
+      <section class="wishes" aria-label="送给新一岁的你">
+        <div class="wish-intro"><span class="section-number">01 / WISHES</span><h2>送给新一岁的你</h2></div>
+        <div class="wish-item"><span class="wish-symbol" aria-hidden="true">✷</span><div><h3>眼里有光</h3><p>奔赴热爱，也享受沿途的风。</p></div></div>
+        <div class="wish-item"><span class="wish-symbol" aria-hidden="true">↗</span><div><h3>心中有底气</h3><p>勇敢做自己，每一步都算数。</p></div></div>
+        <div class="wish-item"><span class="wish-symbol" aria-hidden="true">∞</span><div><h3>快乐不设限</h3><p>有人陪你笑，有小事值得庆祝。</p></div></div>
+      </section>
+      <section id="letter" class="letter" hidden aria-labelledby="letter-title" tabindex="-1">
+        <div class="letter-side"><span class="section-number">02 / JUST FOR YOU</span><p>有些祝福，<br>想慢慢说给你听。</p><span class="letter-star" aria-hidden="true">✳</span></div>
+        <article class="letter-content"><span class="letter-label">一封星光来信</span><h2 id="letter-title">亲爱的董子豪：</h2><p>今天，先把忙碌放一放。把蛋糕切得大一点，把快乐留得久一点。你值得被认真地庆祝，也值得收到所有真诚的祝福。</p><p>愿新的一岁，你有奔向远方的勇气，也有慢下来看看晚霞的心情。想做的事，一点一点靠近；喜欢的人，常常见面；平凡的日子，也有让你忍不住嘴角上扬的小惊喜。</p><p>不必每一天都闪闪发光。疲惫的时候，就好好休息；开心的时候，就尽情大笑。愿你按照自己的节奏，长成自己喜欢的模样。</p><p class="letter-ending">生日快乐，董子豪。<br>愿你自由而明亮，所遇皆温柔。</p><div class="signature"><span>来自，所有希望你快乐的心意</span><span aria-hidden="true">✦</span></div></article>
+      </section>
+    </main>
+    <footer><span>愿这一年的故事，比星空更灿烂。</span><span>MADE OF STARDUST & GOOD WISHES <span aria-hidden="true">✧</span></span></footer>
+  </div>
+</body>
+</html>
